@@ -14,14 +14,29 @@
         .text-gradient { background: linear-gradient(135deg, #ffffff 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         input, select { color: #000 !important; appearance: none; }
         .soul-glow { text-shadow: 0 0 30px rgba(99, 102, 241, 0.4); }
+        
+        /* Premium Logo Effects */
+        .logo-hero { transition: transform 0.5s ease; }
+        .logo-hero:hover { transform: scale(1.05); }
+        
+        .animate-pulse-slow {
+            animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 45px rgba(99, 102, 241, 0.8)); transform: scale(1.02); }
+        }
+
+        #nav-logo-container { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body class="selection:bg-indigo-500 selection:text-white">
 
-  <nav class="fixed w-full glass-nav">
+    <nav class="fixed w-full glass-nav">
         <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img src="logo.png" alt="HRD Logo" class="h-16 w-16 object-contain rounded-xl shadow-2xl shadow-indigo-500/40"> 
+            <div id="nav-logo-container" class="flex items-center gap-4 opacity-0 -translate-x-4 pointer-events-none">
+                <img src="logo.png" alt="HRD Logo" class="h-14 w-14 object-contain"> 
                 <div class="flex flex-col">
                     <div class="text-2xl font-extrabold tracking-tighter uppercase italic leading-none">HRD<span class="text-indigo-500 not-italic">Solutions</span></div>
                     <span class="text-[8px] text-slate-500 font-bold tracking-[0.2em] uppercase mt-1">Human Soul • Robotic Precision</span>
@@ -34,9 +49,13 @@
         </div>
     </nav>
 
-    <header class="pt-48 md:pt-64 pb-24 px-6 max-w-7xl mx-auto text-center">
+    <header class="pt-48 md:pt-60 pb-24 px-6 max-w-7xl mx-auto text-center">
+        <div class="mb-12 flex justify-center">
+            <img src="logo.png" alt="HRD Intelligence" class="h-40 w-40 md:h-64 md:w-64 object-contain logo-hero animate-pulse-slow">
+        </div>
+
         <span class="inline-block py-1 px-4 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-6 border border-indigo-500/20">
-            Humanized Robotics Development
+            Sovereign Intelligence Node Active
         </span>
         <h1 class="text-6xl md:text-9xl font-extrabold tracking-tight mb-8 text-gradient leading-[0.9] soul-glow">
             Human Soul. <br>Robotic Precision.
@@ -129,6 +148,19 @@
     </footer>
 
     <script>
+        // Scroll Logic: Fades in the nav logo once you leave the hero area
+        const navLogo = document.getElementById('nav-logo-container');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                navLogo.classList.remove('opacity-0', '-translate-x-4', 'pointer-events-none');
+                navLogo.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto');
+            } else {
+                navLogo.classList.add('opacity-0', '-translate-x-4', 'pointer-events-none');
+                navLogo.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto');
+            }
+        });
+
+        // Form Submission Logic
         const form = document.getElementById("audit-form");
         const successOverlay = document.getElementById("form-success");
         const btn = document.getElementById("submit-btn");
@@ -147,7 +179,7 @@
                 if (response.ok) {
                     successOverlay.classList.remove("hidden");
                 } else {
-                    alert("Submission error. Please verify Formspree ID.");
+                    alert("Submission error.");
                     btn.disabled = false;
                     btn.innerText = "Request System Audit";
                 }
